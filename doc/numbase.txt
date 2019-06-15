@@ -1,0 +1,49 @@
+*numbase.txt*  Cycle through number bases
+
+Author:     Filip Kokosinski <filip.kokosinski at gmail.com>
+License:    MIT
+
+=============================================================================
+INTRODUCTION                                    *numbase*
+
+        NumBase allows user to cycle through a list of number bases.
+
+SETTINGS                                        *numbase-settings*
+
+        g:numbase#base                          *g:numbase#base*
+                Defines the order of and bases to cycle through. The default
+                value is:
+                
+                `let g:numbase#base = [2, 10, 16]`
+
+        g:numbase#base_regex                    *g:numbase#base_regex*
+                Allows the plugin to recognize different bases via regular
+		expressions (uses very magic in dictionary values). The
+		default value is:
+
+                `let g:numbase#base_regex = {`
+                        `\'2':   '\v0^b[01]+$',`
+                        `\'10':  '\v^[0-9]+$',`
+                        `\'16':  '\v^0x[0-9a-f]+$',`
+                        `\}`
+
+
+        g:numbase#base_prefix                   *g:numbase#base_prefix*
+                Defines prefixes to a different number systems. If none is
+		defined here, empty string is used instead. The default value
+		is:
+
+                `let g:numbase#base_prefix = {`
+                        `\'2':   '0b',`
+                        `\'16':  '0x',`
+                        `\}`
+
+COMMANDS                                        *numbase-commands*
+
+	numbase#ChangeBase({dir})		*numbase#ChangeBase*
+		Cycle through bases defined in |g:numbase#base| with {dir}
+		specifying the next base index in relation to current base
+		index. Accepts negative values.
+
+=============================================================================
+vim:tw=78:sw=4:ts=8:ft=help:norl:noet:

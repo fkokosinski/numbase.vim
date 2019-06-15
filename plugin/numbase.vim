@@ -72,7 +72,7 @@ endfunction
 " Parameters:
 " dir (Integer): index incerement in relation to current base index in
 "                numbase#bases list
-function! ToggleNumber(dir)
+function! numbase#ChangeBase(dir)
    let l:num = expand("<cword>")
    let l:base = GetNumBase(l:num)
 
