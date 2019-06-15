@@ -22,7 +22,7 @@ let g:numbase#base_prefix = {
 "
 " Returns:
 " Integer: Number base
-function! GetNumBase(num)
+function! s:GetNumBase(num)
     for [base, regex] in items(g:numbase#base_regex)
         if a:num =~? regex
             return str2nr(base)
@@ -39,7 +39,7 @@ endfunction
 "
 " Returns:
 " String: Encoded digit
-function! GetBaseDigit(num)
+function! s:GetBaseDigit(num)
     if a:num < 10
         return a:num . ""
     else
@@ -55,12 +55,12 @@ endfunction
 "
 " Returns:
 " String: converted number to a given base
-function! GetBaseNum(num, base)
-    let l:num = str2nr(a:num, GetNumBase(a:num))
+function! s:GetBaseNum(num, base)
+    let l:num = str2nr(a:num, s:GetNumBase(a:num))
     let l:out = ""
 
     while l:num > 0
-        let l:out = GetBaseDigit(float2nr(fmod(l:num, a:base))) . l:out
+        let l:out = s:GetBaseDigit(float2nr(fmod(l:num, a:base))) . l:out
         let l:num = l:num / a:base
     endwhile
 
@@ -74,7 +74,7 @@ endfunction
 "                numbase#bases list
 function! numbase#ChangeBase(dir)
    let l:num = expand("<cword>")
-   let l:base = GetNumBase(l:num)
+   let l:base = s:GetNumBase(l:num)
 
    " get next base index in numbase#base list
    let l:base_idx = index(g:numbase#base, l:base)
@@ -86,6 +86,6 @@ function! numbase#ChangeBase(dir)
 
    " save register and change text; restore register
    let reg = @@
-   execute "normal! ciw" . GetBaseNum(l:num, g:numbase#base[l:next_idx])
+   execute "normal! ciw" . s:GetBaseNum(l:num, g:numbase#base[l:next_idx])
    let @@ = reg
 endfunction
