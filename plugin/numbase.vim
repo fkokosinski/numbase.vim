@@ -1,23 +1,60 @@
-let g:bases = [2, 10, 16]
+let g:numbase#base = [
+            \2,
+            \10,
+            \16,
+            \]
 
+let g:numbase#base_regex = {
+            \'2':   '\v^0b[01]+$',
+            \'10':  '\v^[0-9]+$',
+            \'16':  '\v^0x[0-9a-f]+$',
+            \}
+
+let g:numbase#base_prefix = {
+            \'2':   '0b',
+            \'16':  '0x',
+            \}
+
+" Get number base
+"
+" Parameters:
+" num (String): Number to get base from
+"
+" Returns:
+" Integer: Number base
 function! GetNumBase(num)
-    if a:num =~? '\v^0b[01]+$'
-        return 2
-    elseif a:num =~? '\v^[0-9]+$'
-        return 10
-    elseif a:num =~? '\v^0x[0-9a-f]+$'
-        return 16
-    endif
+    for [base, regex] in items(g:numbase#base_regex)
+        if a:num =~? regex
+            return str2nr(base)
+        endif
+    endfor
 endfunction
 
+" Get digit from a multiple digit number in base 10. Assumes digits of value
+" greater than 9 are encoded with consecutive lowercase latin script
+" characters
+"
+" Parameters:
+" num (Integer): Digit(s) to encode
+"
+" Returns:
+" String: Encoded digit
 function! GetBaseDigit(num)
     if a:num < 10
         return a:num . ""
     else
-        return nr2char(a:num + 87)
+        return nr2char(a:num + char2nr('a'))
     endif
 endfunction
 
+" Convert number to a new base
+"
+" Parameters:
+" num (String): Number to convert
+" base (Integer): Base to convert num to
+"
+" Returns:
+" String: converted number to a given base
 function! GetBaseNum(num, base)
     let l:num = str2nr(a:num, GetNumBase(a:num))
     let l:out = ""
@@ -27,27 +64,28 @@ function! GetBaseNum(num, base)
         let l:num = l:num / a:base
     endwhile
 
-    if a:base == 2
-        let l:out = "0b" . l:out
-    elseif a:base == 16
-        let l:out = "0x" . l:out
-    endif
-
-    return l:out
+    return get(g:numbase#base_prefix, a:base, '') . l:out
 endfunction
 
+" Toggle number base
+"
+" Parameters:
+" dir (Integer): index incerement in relation to current base index in
+"                numbase#bases list
 function! ToggleNumber(dir)
-    let l:num = expand("<cword>")
-    let l:base = GetNumBase(l:num)
+   let l:num = expand("<cword>")
+   let l:base = GetNumBase(l:num)
 
-    let l:base_idx = index(g:bases, l:base)
-    if l:base_idx + 1 == len(g:bases)
-        let l:next_idx = 0
-    else
-        let l:next_idx = l:base_idx + a:dir
-    endif
+   " get next base index in numbase#base list
+   let l:base_idx = index(g:numbase#base, l:base)
+   if l:base_idx + 1 == len(g:numbase#base)
+       let l:next_idx = 0
+   else
+       let l:next_idx = l:base_idx + a:dir
+   endif
 
-    let reg = @@
-    execute "normal! ciw" . GetBaseNum(l:num, g:bases[l:next_idx])
-    let @@ = reg
+   " save register and change text; restore register
+   let reg = @@
+   execute "normal! ciw" . GetBaseNum(l:num, g:numbase#base[l:next_idx])
+   let @@ = reg
 endfunction
