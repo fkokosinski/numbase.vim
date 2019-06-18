@@ -22,7 +22,7 @@ let g:numbase#base_prefix = {
 "
 " Returns:
 " Integer: Number base
-function! s:GetNumBase(num)
+function! s:GetNumBase(num) abort
     for [base, regex] in items(g:numbase#base_regex)
         if a:num =~? regex
             return str2nr(base)
@@ -39,7 +39,7 @@ endfunction
 "
 " Returns:
 " String: Encoded digit
-function! s:GetBaseDigit(num)
+function! s:GetBaseDigit(num) abort
     if a:num < 10
         return a:num . ""
     else
@@ -55,7 +55,7 @@ endfunction
 "
 " Returns:
 " String: converted number to a given base
-function! s:GetBaseNum(num, base)
+function! s:GetBaseNum(num, base) abort
     let l:num = str2nr(a:num, s:GetNumBase(a:num))
     let l:out = ""
 
@@ -72,7 +72,7 @@ endfunction
 " Parameters:
 " dir (Integer): index incerement in relation to current base index in
 "                numbase#bases list
-function! numbase#ChangeBase(dir)
+function! numbase#ChangeBase(dir) abort
    let l:num = expand("<cword>")
    let l:base = s:GetNumBase(l:num)
 
