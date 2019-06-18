@@ -15,13 +15,6 @@ let g:numbase#base_prefix = {
             \'16':  '0x',
             \}
 
-" Get number base
-"
-" Parameters:
-" num (String): Number to get base from
-"
-" Returns:
-" Integer: Number base
 function! s:GetNumBase(num) abort
     for [base, regex] in items(g:numbase#base_regex)
         if a:num =~? regex
@@ -30,15 +23,6 @@ function! s:GetNumBase(num) abort
     endfor
 endfunction
 
-" Get digit from a multiple digit number in base 10. Assumes digits of value
-" greater than 9 are encoded with consecutive lowercase latin script
-" characters
-"
-" Parameters:
-" num (Integer): Digit(s) to encode
-"
-" Returns:
-" String: Encoded digit
 function! s:GetBaseDigit(num) abort
     if a:num < 10
         return a:num . ""
@@ -47,14 +31,6 @@ function! s:GetBaseDigit(num) abort
     endif
 endfunction
 
-" Convert number to a new base
-"
-" Parameters:
-" num (String): Number to convert
-" base (Integer): Base to convert num to
-"
-" Returns:
-" String: converted number to a given base
 function! s:GetBaseNum(num, base) abort
     let l:num = str2nr(a:num, s:GetNumBase(a:num))
     let l:out = ""
@@ -67,11 +43,6 @@ function! s:GetBaseNum(num, base) abort
     return get(g:numbase#base_prefix, a:base, '') . l:out
 endfunction
 
-" Toggle number base
-"
-" Parameters:
-" dir (Integer): index incerement in relation to current base index in
-"                numbase#bases list
 function! numbase#ChangeBase(dir) abort
    let l:num = expand("<cword>")
    let l:base = s:GetNumBase(l:num)
