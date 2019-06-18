@@ -27,7 +27,7 @@ function! s:GetBaseDigit(num) abort
     if a:num < 10
         return a:num . ''
     else
-        return nr2char(a:num + char2nr('a'))
+        return nr2char(a:num + char2nr('a') - 10)
     endif
 endfunction
 
