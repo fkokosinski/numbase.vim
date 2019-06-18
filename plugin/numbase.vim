@@ -25,7 +25,7 @@ endfunction
 
 function! s:GetBaseDigit(num) abort
     if a:num < 10
-        return a:num . ""
+        return a:num . ''
     else
         return nr2char(a:num + char2nr('a'))
     endif
@@ -33,7 +33,7 @@ endfunction
 
 function! s:GetBaseNum(num, base) abort
     let l:num = str2nr(a:num, s:GetNumBase(a:num))
-    let l:out = ""
+    let l:out = ''
 
     while l:num > 0
         let l:out = s:GetBaseDigit(float2nr(fmod(l:num, a:base))) . l:out
@@ -44,7 +44,7 @@ function! s:GetBaseNum(num, base) abort
 endfunction
 
 function! numbase#ChangeBase(dir) abort
-   let l:num = expand("<cword>")
+   let l:num = expand('<cword>')
    let l:base = s:GetNumBase(l:num)
 
    " get next base index in numbase#base list
@@ -57,6 +57,6 @@ function! numbase#ChangeBase(dir) abort
 
    " save register and change text; restore register
    let reg = @@
-   execute "normal! ciw" . s:GetBaseNum(l:num, g:numbase#base[l:next_idx])
+   execute 'normal! ciw' . s:GetBaseNum(l:num, g:numbase#base[l:next_idx])
    let @@ = reg
 endfunction
