@@ -1,0 +1,31 @@
+# binary to decimal
+Given(Binary number):
+  0b10101100
+
+Execute(Binary to decimal):
+  call numbase#ChangeBase(1)
+
+Expect(Number in base 10):
+  172
+
+
+# decimal to hexadecimal
+Given(Decimal number):
+  2489
+
+Execute(Decimal to hexadecimal):
+  call numbase#ChangeBase(1)
+
+Expect(Number in base 16):
+  0x9b9
+
+
+# hexadecimal to binary
+Given(Hexadecimal number):
+  0xbeef
+
+Execute(Hexadecimal to binary):
+  call numbase#ChangeBase(1)
+
+Expect(Number in base 2):
+  0b1011111011101111
