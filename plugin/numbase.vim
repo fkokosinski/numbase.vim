@@ -60,3 +60,15 @@ function! numbase#ChangeBase(dir) abort
    execute 'normal! ciw' . s:GetBaseNum(l:num, g:numbase#base[l:next_idx])
    let @@ = reg
 endfunction
+
+function! numbase#ChangeBaseLines(dir) abort
+    " get coordinates
+    let [start_x, start_y] = getpos("'<")[1:2]
+    let [end_x, end_y] = getpos("'>")[1:2]
+
+    " change base in every line in selected block
+    for lineno in range(start_x, end_x)
+        execute 'normal! ' . lineno . 'G' . start_y  . 'lh'
+        call numbase#ChangeBase(a:dir)
+    endfor
+endfunction
